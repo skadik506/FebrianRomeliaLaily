@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>HBD Serda Febrian Amelia Laily</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&family=Dancing+Script:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --gold: #d4af37;
+        --gold-soft: #f1d592;
+      }
+      * {
+        -webkit-tap-highlight-color: transparent;
+        outline: none !important;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: #050505;
+        color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        width: 100vw;
+        overflow-x: hidden;
+      }
+
+      .serif {
+        font-family: "Playfair Display", serif;
+      }
+      .romantic {
+        font-family: "Dancing Script", cursive;
+      }
+
+      .bg-glow {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at center, #1a0a0c 0%, #050505 100%);
+        z-index: -1;
+      }
+
+      /* Glassmorphism Refined */
+      .glass-panel {
+        background: rgba(15, 15, 15, 0.75);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(212, 175, 55, 0.15);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      }
+
+      .photo-frame {
+        border: 1.5px solid rgba(212, 175, 55, 0.3);
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+      }
+
+      /* Animasi Transisi */
+      .fade-in {
+        animation: textReveal 0.7s ease-out forwards;
+      }
+      @keyframes textReveal {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+          filter: blur(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      .custom-scroll::-webkit-scrollbar {
+        width: 2px;
+      }
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: var(--gold);
+      }
+
+      .btn-action {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .btn-action:active {
+        transform: scale(0.95);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+    <div id="player" class="fixed opacity-0 pointer-events-none"></div>
+    <canvas id="heartCanvas" class="fixed inset-0 z-0"></canvas>
+
+    <div
+      id="welcome-overlay"
+      class="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center text-center px-8 transition-all duration-[1.2s]"
+    >
+      <div class="mb-6">
+        <svg
+          width="55"
+          height="55"
+          viewBox="0 0 24 24"
+          fill="none"
+          class="stroke-[#c5a059] animate-pulse"
+        >
+          <path
+            d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"
+            stroke-width="0.8"
+          />
+        </svg>
+      </div>
+      <h2 class="romantic text-white text-5xl md:text-7xl mb-4">
+        Untuk Kekasihku...
+      </h2>
+      <p class="text-gray-500 tracking-[0.4em] mb-10 text-[9px] uppercase">
+        Special Message for Serda Febrian
+      </p>
+      <button
+        onclick="initExperience()"
+        class="px-12 py-3.5 border border-[#c5a059] text-[#c5a059] tracking-widest uppercase text-xs font-bold rounded-full hover:bg-[#c5a059] hover:text-black transition-all"
+      >
+        Buka Surat
+      </button>
+    </div>
+
+    <div
+      id="main-content"
+      class="relative z-10 min-h-screen flex flex-col items-center justify-center py-8 px-5 opacity-0 transition-opacity duration-1000"
+    >
+      <div
+        class="w-full max-w-5xl flex flex-col md:flex-row gap-6 md:gap-10 items-center justify-center"
+      >
+        <div class="w-full md:w-5/12 flex justify-center">
+          <div
+            class="relative w-full max-w-[240px] md:max-w-md aspect-[4/5] rounded-[1.8rem] overflow-hidden photo-frame shadow-2xl"
+          >
+            <img
+              id="slideshow"
+              src="img/4.jpeg"
+              class="w-full h-full object-cover transition-all duration-1000"
+              alt="Serda Febrian"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+            ></div>
+            <div
+              class="absolute bottom-5 left-5 border-l-2 border-[#c5a059] pl-4"
+            >
+              <p class="romantic text-[#c5a059] text-xl" id="photo-label">
+                Prajurit Tangguhku
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full md:w-7/12 flex flex-col">
+          <div
+            class="glass-panel p-7 md:p-12 rounded-[2.2rem] flex flex-col shadow-2xl overflow-hidden"
+          >
+            <div
+              class="romantic text-5xl text-[#c5a059] opacity-10 absolute top-4 left-6"
+            >
+              “
+            </div>
+
+            <div
+              id="text-container"
+              class="leading-relaxed text-gray-200 text-base md:text-lg custom-scroll min-h-[220px] mb-4"
+            ></div>
+
+            <div
+              class="border-t border-white/5 pt-5 flex items-center justify-between"
+            >
+              <div class="flex flex-col">
+                <span
+                  class="text-[8px] text-gray-500 uppercase tracking-widest mb-0.5"
+                  >Halaman</span
+                >
+                <div class="flex items-baseline gap-1">
+                  <span
+                    id="page-indicator"
+                    class="serif italic text-[#c5a059] text-xl"
+                    >01</span
+                  >
+                  <span class="text-gray-600 text-[10px]">/ 12</span>
+                </div>
+              </div>
+
+              <div class="flex gap-2">
+                <button
+                  id="btn-prev"
+                  onclick="prevStep()"
+                  class="hidden border border-white/10 text-white/70 px-4 py-2 rounded-full font-bold text-[9px] uppercase tracking-widest btn-action"
+                >
+                  Kembali
+                </button>
+
+                <button
+                  onclick="nextStep()"
+                  id="btn-next"
+                  class="bg-gradient-to-r from-[#c5a059] to-[#f1d592] text-black px-7 py-2.5 rounded-full font-bold text-[9px] uppercase tracking-widest flex items-center gap-2 btn-action"
+                >
+                  <span id="next-text">Lanjut</span>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                  >
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const parts = [
+        `<h3 class="romantic text-[#c5a059] text-3xl mb-4 fade-in">Assalamu’alaikum...</h3><p class="fade-in leading-relaxed">Warahmatullahi Wabarakatuh.<br><br>Selamat ulang tahun yang ke-21, <span class="text-[#f1d592] font-semibold">Serda Febrian Amelia Laily</span>. Barakallahu fii umrik.</p>`,
+        `<p class="fade-in">Di hari yang penuh berkah ini, doa tulusku melangit hanya untukmu. Setiap bait kata yang kutuliskan adalah getaran jujur dari dalam dadaku, memohon kepada Sang Pemilik Waktu agar setiap detik usiamu penuh keberkahan.</p>`,
+        `<p class="fade-in">Semoga Allah SWT senantiasa menjaga langkahmu, melindungi setiap jengkal pengabdianmu, dan memberikan ketenangan di mana pun kamu berpijak. Di usiamu yang baru ini, jadilah sosok yang semakin kuat fisik dan mentalnya.</p>`,
+        `<p class="fade-in">Aku berdoa agar semangatmu tidak pernah padam dalam menyelesaikan setiap tahap pendidikanmu. Semoga Allah menempatkanmu di kesatuan dan tempat dinas terbaik untuk agama, bangsa, dan keluarga.</p>`,
+        `<p class="fade-in">Aku tahu, seragam yang kamu kenakan bukan sekadar kain, melainkan tanggung jawab besar yang menuntut pengorbanan waktu dan tenaga. Kamu adalah bukti bahwa kelembutan dan ketegasan bisa bersatu dalam satu jiwa.</p>`,
+        `<p class="romantic text-[#c5a059] text-3xl mb-3 fade-in">Untuk Keluarga...</p><p class="fade-in">Ketahuilah, di setiap sujud dan langkahmu, ada doa yang tidak pernah putus dari orang tuamu. Mereka begitu bangga padamu, dan mereka akan selalu menjadi kekuatan utama yang mendukungmu tanpa henti.</p>`,
+        `<p class="fade-in italic text-gray-300">Sebagaimana amanah yang pernah disampaikan Mamahmu kepadaku untuk menjagamu, maka di sinilah aku berdiri—berjanji untuk selalu menjadi pendukung setiamu, penjaga hatimu, dan teman dalam setiap perjuanganmu.</p>`,
+        `<p class="fade-in">Di balik seragam dan ketegasanmu sebagai seorang prajurit, ketahuilah bahwa bagiku, kamu adalah sosok yang kelembutan dan kehadirannya selalu aku syukuri setiap hari. Aku memahami ada lelah yang sering kau sembunyikan.</p>`,
+        `<p class="fade-in">Ada rindu yang harus kau tepis demi tugas negara. Namun percayalah, sejauh apa pun tugas memisahkan kita, doaku akan selalu menjadi pelindung tak kasat mata di sekelilingmu.</p>`,
+        `<p class="fade-in font-semibold text-[#f1d592] italic text-lg">"Hatiku akan selalu menjadi rumah paling hangat, tempatmu untuk pulang, bercerita, dan menemukan kembali ketenanganmu."</p>`,
+        `<p class="fade-in">Aku sangat bangga atas segala dedikasi dan perjuanganmu hingga titik ini. Aku akan selalu ada di sini, berdiri tegak di sampingmu untuk mendukung setiap mimpi dan langkahmu ke depan.</p>`,
+        `<p class="romantic text-[#c5a059] text-4xl mb-4 fade-in">Selamat Ulang Tahun, Sayang.</p><p class="fade-in">Semoga masa depan kita selalu dalam lindungan, keberkahan, dan ridho Allah SWT. Amin ya Rabbal Alamin.<br><br><span class="romantic text-[#f1d592] text-3xl mt-4 block">— Kekasihmu, Alwi Al Hadad</span></p>`,
+      ];
+
+      const labels = [
+        "Prajurit Tangguhku",
+        "Kebanggaanku",
+        "Wanita Hebat",
+        "Febrian Amelia",
+        "Rumah Pulangku",
+        "Amanah Suci",
+        "Cahaya Doaku",
+        "Masa Depanku",
+      ];
+
+      let currentPart = 0;
+      let photoIdx = 1;
+      let slideshowTimer;
+      let isSpecialMode = false;
+
+      var tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName("script")[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player("player", {
+          height: "0",
+          width: "0",
+          videoId: "57jZJ2QpKRg",
+          playerVars: { autoplay: 0, loop: 1, playlist: "57jZJ2QpKRg" },
+        });
+      }
+
+      function initExperience() {
+        document.getElementById("welcome-overlay").style.opacity = "0";
+        setTimeout(() => {
+          document.getElementById("welcome-overlay").style.display = "none";
+          document.getElementById("main-content").classList.add("opacity-100");
+          if (player) {
+            player.playVideo();
+            player.setVolume(80);
+          }
+          renderContent();
+          startSlides();
+          initHearts();
+        }, 1200);
+      }
+
+      function changePhoto(src, label) {
+        const img = document.getElementById("slideshow");
+        img.style.opacity = "0";
+        setTimeout(() => {
+          img.src = src;
+          img.style.opacity = "1";
+          document.getElementById("photo-label").innerText = label;
+        }, 500);
+      }
+
+      function renderContent() {
+        const container = document.getElementById("text-container");
+        container.innerHTML = parts[currentPart];
+        document.getElementById("page-indicator").innerText = String(
+          currentPart + 1,
+        ).padStart(2, "0");
+
+        if (currentPart > 0)
+          document.getElementById("btn-prev").classList.remove("hidden");
+        else document.getElementById("btn-prev").classList.add("hidden");
+
+        // Logic Foto
+        if (currentPart === 5 || currentPart === 6) {
+          isSpecialMode = true;
+          clearInterval(slideshowTimer);
+          changePhoto("img/keluarga.png", "Kekuatan Utama");
+        } else if (currentPart === 11) {
+          isSpecialMode = true;
+          clearInterval(slideshowTimer);
+          changePhoto("img/1.jpeg", "Cinta Selamanya");
+        } else {
+          if (isSpecialMode) {
+            isSpecialMode = false;
+            startSlides();
+          }
+        }
+
+        const btnNext = document.getElementById("btn-next");
+        document.getElementById("next-text").innerText =
+          currentPart === 11 ? "Ulangi" : "Lanjut";
+      }
+
+      function nextStep() {
+        if (currentPart < parts.length - 1) {
+          // Jika belum di halaman terakhir, lanjut ke part berikutnya
+          currentPart++;
+          renderContent();
+        } else {
+          // Jika sudah di halaman terakhir (Part 12), pindah ke gallery.html
+          window.location.href = "gallery.html";
+        }
+      }
+
+      function prevStep() {
+        if (currentPart > 0) {
+          currentPart--;
+          renderContent();
+        }
+      }
+
+      function startSlides() {
+        clearInterval(slideshowTimer);
+        slideshowTimer = setInterval(() => {
+          photoIdx = (photoIdx % 64) + 1;
+          changePhoto(
+            `img/${photoIdx}.jpeg`,
+            labels[Math.floor(Math.random() * labels.length)],
+          );
+        }, 5000);
+      }
+
+      const canvas = document.getElementById("heartCanvas");
+      const ctx = canvas.getContext("2d");
+      let hearts = [];
+      function initHearts() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        animate();
+      }
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (hearts.length < 25) {
+          hearts.push({
+            x: Math.random() * canvas.width,
+            y: canvas.height + 20,
+            s: Math.random() * 8 + 2,
+            v: Math.random() * 0.4 + 0.1,
+            o: Math.random() * 0.3 + 0.1,
+          });
+        }
+        hearts.forEach((h, i) => {
+          h.y -= h.v;
+          ctx.fillStyle = `rgba(212, 175, 55, ${h.o})`;
+          ctx.font = `${h.s}px serif`;
+          ctx.fillText("❤️", h.x, h.y);
+          if (h.y < -20) hearts.splice(i, 1);
+        });
+        requestAnimationFrame(animate);
+      }
+      window.onresize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+    </script>
+  </body>
+</html>
